@@ -23,9 +23,25 @@ function LoginWithGoogle({ loginStatus }) {
             }).then((res) => {
                 setProfile(res.data);
                 loginStatus(res.data)
+                saveUser(res.data)
+                console.log(res.data);
             }).catch((err) => console.log(err));
         }
     }, [user]);
+
+    const saveUser = (user) => {
+        console.log(user);
+        fetch('http://localhost:3000/api/user', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+        .then(response => response.text())
+        .then(data => console.log(data))
+        .catch(error => console.log(error));
+    };
 
     // log out function to log the user out of google and set the profile array to null
     const logOut = () => {
